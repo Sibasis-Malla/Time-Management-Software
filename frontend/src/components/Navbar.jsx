@@ -1,33 +1,33 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 export default function Navbar() {
   return (
     <>
       <nav class="bg-white border-gray-200 dark:bg-gray-900">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl px-4 md:px-6 py-2.5">
-          <a href="https://flowbite.com" class="flex items-center">
-            <img
+          {/* <a href="https://flowbite.com" class="flex items-center"> */}
+           <div className="flex flex-row">
+           <img
               src="https://flowbite.com/docs/images/logo.svg"
               class="h-6 mr-3 sm:h-9"
               alt="Flowbite Logo"
             />
-            <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
+            <Link class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">TMS</Link>
+           </div>
+            {/* <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">
               Flowbite
-            </span>
-          </a>
+            </span> */}
+          {/* </a> */}
           <div class="flex items-center">
             <a
               href="tel:5541251234"
               class="mr-6 text-sm font-medium text-gray-500 dark:text-white hover:underline"
             >
-              (555) 412-1234
+              Signup
             </a>
-            <a
-              href="#"
-              class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              Login
-            </a>
+            {/* <a class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"> */}
+              <Link to="/Login" class="text-sm font-medium text-blue-600 dark:text-blue-500 hover:underline"> Login</Link>
+            {/* </a> */}
           </div>
         </div>
       </nav>
