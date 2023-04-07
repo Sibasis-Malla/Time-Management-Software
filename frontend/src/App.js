@@ -2,17 +2,23 @@ import logo from "./logo.svg";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import { Route, Routes } from "react-router-dom";
+import axios from "axios";
+import React,{useState,useEffect} from "react";
+
+
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
-import axios from "axios";
-import React,{useState,useEffect} from "react";
+import AppointmentsForm from "./pages/AppointmentsForm";
+import AppointmentsDashboard from "./pages/AppointmentsDashboard";
+
 
 export default function App() {
   axios.defaults.withCredentials = true
   axios.defaults.baseURL = "http://localhost:8080"
   const [loggedIn, setloggedIn] = useState(false)
   const [empID, setuserName] = useState("")
+  const [id,setID] = useState("")
   const getUser=()=> {
     axios.get('/').then(response => {
       console.log('Get user response: ')
@@ -22,10 +28,12 @@ export default function App() {
 
       setloggedIn(true);
       setuserName(response.data.user.name)
+      setID(response.data.user.empID)
       } else {
         console.log('Get user: no user');
         setloggedIn(false);
         setuserName(null)
+     
       }
     })
   }
@@ -35,11 +43,13 @@ export default function App() {
     },[])
   return (
     <>
-      <Navbar isloggedIn={loggedIn} empID={empID} setloggedIn={setloggedIn} setempID={setuserName}/>
+      <Navbar isloggedIn={loggedIn} empID={empID} setloggedIn={setloggedIn} setempID={setuserName} Id={id}/>
       <Routes>
       <Route path="/" element={<Home />}></Route>
         <Route path="/Login" element={<Login setloggedIn={setloggedIn} setempID={setuserName}/>}/>
+        <Route path="/AddAppointments" element={<AppointmentsForm setloggedIn={setloggedIn} ID={id}/>}/>
         <Route path="/Signup" element={<Signup/>}/>
+        <Route path="/:id/Dashboard" element={<AppointmentsDashboard/>} ID={id}/>
       </Routes>
 
       {/* <h1 className="text-3xl font-bold text-purple-700 underline">

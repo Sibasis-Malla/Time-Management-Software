@@ -4,6 +4,7 @@ export default function Signup() {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [empID, setEmpId] = useState("")
+    const [secID, setSecId] = useState("")
     const [password, setpassword] = useState("")
    const  handleName= (event)=> {
 		setName(() => ([event.target.name] = event.target.value))
@@ -17,17 +18,23 @@ export default function Signup() {
     const  handlePassword= (event)=> {
 		setpassword(() => ([event.target.name] = event.target.value))
 	}
+    const  handlesecid= (event)=> {
+		setSecId(() => ([event.target.name] = event.target.value))
+	}
+    
     const handleSubmit = (event)=>{
         event.preventDefault()
         axios.post('/signup', {
             name:name,
             email:email,
             empID: empID,
+            secID: secID,
             password: password
 		}).then(response => {
 				console.log(response)
 				if (!response.data.errmsg) {
 					console.log('successful signup')
+                    window.location.href = "/login"
 					// window.href
 				} else {
 					console.log('username already taken')
@@ -60,7 +67,11 @@ export default function Signup() {
 
                   <div>
                       <label for="empID" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Employee's ID</label>
-                      <input onChange={handleEmpid} type="text" name="empID" id="empID" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="S1022" required=""/>
+                      <input onChange={handleEmpid} type="text" name="empID" id="empID" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="E1022" required=""/>
+                  </div>
+                  <div>
+                      <label for="secID" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Secretary's ID</label>
+                      <input onChange={handlesecid} type="text" name="secID" id="secID" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="S1022" required=""/>
                   </div>
 
 

@@ -58,20 +58,20 @@ export default function Navbar(props) {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                 to ="/AddAppointments"
                   class="text-gray-900 dark:text-white hover:underline"
                 >
-                  Company
-                </a>
+                  Add Appointment
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                 to= {`/${props.Id}/Dashboard`}
                   class="text-gray-900 dark:text-white hover:underline"
                 >
-                  Team
-                </a>
+                  Meeting Dashboard
+                </Link>
               </li>
               <li>
                 <a
