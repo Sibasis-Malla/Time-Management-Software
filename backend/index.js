@@ -9,7 +9,7 @@ const app = express()
 var cors = require('cors')
 const PORT = 8080
 // Route requires
-const user = require('./routes/user')
+const user = require('./routes/index')
 // app.use(function(req, res, next) {
 // 	res.header("Access-Control-Allow-Origin", "http://localhost:3000");
 // 	res.header("Access-Control-Allow-Credentials",true);
