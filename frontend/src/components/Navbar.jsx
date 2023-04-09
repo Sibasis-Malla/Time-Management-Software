@@ -57,14 +57,14 @@ export default function Navbar(props) {
                   Home
                 </a>
               </li>
-              <li>
+           {props.isloggedIn?(<>   {!props.isSec?(<li>
                 <Link
                  to ="/AddAppointments"
                   class="text-gray-900 dark:text-white hover:underline"
                 >
                   Add Appointment
                 </Link>
-              </li>
+              </li>):(<></>)}
               <li>
                 <Link
                  to= {`/${props.Id}/Dashboard`}
@@ -80,7 +80,7 @@ export default function Navbar(props) {
                 >
                   Features
                 </a>
-              </li>
+              </li></>):(<></>)}
             </ul>
           </div>
         </div>

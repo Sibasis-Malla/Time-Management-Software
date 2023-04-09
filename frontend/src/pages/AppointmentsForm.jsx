@@ -10,6 +10,7 @@ export default function AppointmentsForm(props) {
     const [duration, setDuration] = useState()
     const [venue, setVenue] = useState("")
     const [title, setTitle] = useState("")
+    const [execs, setExecs] = useState("")
     const  handleName= (event)=> {
 		setname(() => ([event.target.name] = event.target.value))
 	}
@@ -34,6 +35,9 @@ export default function AppointmentsForm(props) {
     const  handleTitle= (event)=> {
 		setTitle(() => ([event.target.name] = event.target.value))
 	}
+    const  handleExecs= (event)=> {
+		setExecs(() => ([event.target.name] = event.target.value))
+	}
     const handleSubmit = (e)=>{
         e.preventDefault()
         axios.post('/addAppt',{
@@ -45,9 +49,17 @@ export default function AppointmentsForm(props) {
         duration:duration,
         venue:venue,
         title:title,
-        id:props.ID
+        id:props.ID,
+        involvedExecs:execs
         }).then(res=>{
-            alert(res)
+            console.log(res.data.data)
+            // var available=[]
+           // const{a10,a11,a12,a13,a14,a15,a16,a17} = res.data.data
+           //console.log(res)
+           
+
+            alert(`${res.data.message},Try with slot,${res.data.data.start}-${res.data.data.end}`)
+            
         })
     }
   return (
@@ -79,7 +91,14 @@ export default function AppointmentsForm(props) {
                 <label for="title" class="mb-3 block text-base font-medium text-[#07074D]">
                    Title
                 </label>
-                <input onChange={handleTitle} type="text" name="title" id="title" placeholder="Enter your email"
+                <input onChange={handleTitle} type="text" name="title" id="title" placeholder="Enter Title"
+                    class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
+            </div>
+            <div class="mb-5">
+                <label for="title" class="mb-3 block text-base font-medium text-[#07074D]">
+                   Involved Execs
+                </label>
+                <input onChange={handleExecs} type="text" name="execs" id="execs" placeholder="Enter execs separated by comma"
                     class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
             </div>
             <div class="-mx-3 flex flex-wrap">
@@ -106,9 +125,10 @@ export default function AppointmentsForm(props) {
                         <label for="duration" class="mb-3 block text-base font-medium text-[#07074D]">
                             Duration
                         </label>
-                        <input onChange={handleDuration} type="text" name="duration" id="duration"
+                        <input onChange={handleDuration} type="number" name="duration" id="duration"
                             class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
                     </div>
+           
                 </div>
             </div>
 
@@ -123,12 +143,14 @@ export default function AppointmentsForm(props) {
                                 class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
                         </div>
                     </div>
+                    
             </div>
             </div>
+            
             <div>
                 <button onClick={handleSubmit}
                     class="hover:shadow-form w-full rounded-md bg-[#6A64F1] py-3 px-8 text-center text-base font-semibold text-white outline-none">
-                    Book Appointment
+                    Add Appointment
                 </button>
             </div>
         </form>
