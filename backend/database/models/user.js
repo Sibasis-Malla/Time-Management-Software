@@ -12,10 +12,13 @@ const appointmentSchema = new Schema({
   phone: Number,
   slot_time: String,
   slot_date: Date,
-  slot_duration: String,
+  slot_duration: Number,
   venue: String,
   title: String,
+  empID: String,
   created_at: Date,
+  isApproved:{type:Boolean, default:false},
+  involvedExecs:[{type:String}]
 
 });
 
@@ -28,9 +31,28 @@ const userSchema = new Schema({
 	empID: { type: String, unique: true, required: false },
 	secID:{ type: String, unique: true, required: false },
 	password: { type: String, unique: false, required: false },
-	appointments: [appointmentSchema]
+	appointments: [appointmentSchema],
+	
 
 })
+const calenderSchema = new Schema({
+	id: ObjectId,
+	date :{type: Date},
+	 a10:[{type:String}],
+	 a11:[{type:String}],
+	 a12:[{type:String}],
+	 a13:[{type:String}],
+	 a14:[{type:String}],
+	 a15:[{type:String}],
+	 a16:[{type:String}],
+	 a17:[{type:String}],
+	 
+
+
+
+})
+
+const Calender = new mongoose.model('Calender', calenderSchema);
 
 
 // Define schema methods
@@ -39,7 +61,7 @@ userSchema.methods = {
 		return bcrypt.compareSync(inputPassword, this.password)
 	},
 	hashPassword: plainTextPassword => {
-		return bcrypt.hashSync(plainTextPassword, 10)
+		return bcrypt.hashSync(plainTextPassword, 20)
 	}
 }
 
@@ -58,4 +80,4 @@ userSchema.pre('save', function (next) {
 
 const User  = new mongoose.model("User", userSchema);
 
-module.exports = {User, Appointment}
+module.exports = {User, Appointment,Calender}

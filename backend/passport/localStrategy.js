@@ -10,7 +10,7 @@ const strategy = new LocalStrategy(
 	function(empID, password, done) {
 		//console.log("We are in LocalStrategy")
 		User.findOne({ empID: String(empID) }).then((user) => {
-			console.log(user)
+			//console.log(user)
 			return done(null,user)
 			// if (err) {
 			// 	// console.log("err1")
