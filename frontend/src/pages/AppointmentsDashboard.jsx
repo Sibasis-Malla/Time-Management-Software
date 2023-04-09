@@ -28,8 +28,8 @@ export default function AppointmentsDashboard(props) {
 
 return (
     <>
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <div class="mx-10 mt-5 relative overflow-x-auto shadow-md rounded-t-md">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-t-md">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
@@ -88,9 +88,9 @@ return (
             })}
             
         </table>
-        <div>Appointments to Approve</div>
-        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div className='text-lg font-bold mt-7'>Appointments to Approve</div>
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 rounded-t-md">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 rounded-t-md dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
                      Meeting With

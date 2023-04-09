@@ -58,7 +58,8 @@ export default function AppointmentsForm(props) {
            //console.log(res)
            
 
-            alert(`${res.data.message},Try with slot,${res.data.data.start}-${res.data.data.end}`)
+            alert(`${res.data.message} ${res.data.bool?`,Try with slot,${res.data.data.start}-${res.data.data.end}`:``}`);
+            window.location.href = `/${props.ID}/Dashboard`
             
         })
     }
