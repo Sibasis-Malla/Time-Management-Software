@@ -111,12 +111,12 @@ export default function Navbar(props) {
                     </Link>
                   </li>
                   <li>
-                    <a
-                      href="#"
+                    <Link
+                      to="/Statistics"
                       class="text-gray-900 dark:text-white hover:underline"
                     >
-                      Features
-                    </a>
+                      Stats
+                    </Link>
                   </li>
                 </>
               ) : (
