@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const { User, Appointment, Calender } = require("../database/models/user");
-const { checkAppointment, findSlot } = require("../checks/checkIfValid");
+const { checkAppointment, findSlot } = require("../helpers/checkIfValid");
+const {generateStats} = require("../helpers/generateStats")
 // const Appointment = require('../database/models/user')
 const passport = require("../passport");
-const checkIfValid = require("../checks/checkIfValid");
+
 
 router.post("/signup", (req, res) => {
   console.log("user signup");
@@ -262,10 +263,11 @@ router.post("/:id/reschedule", (req, resp) => {
             temp2++;
           }
           const temp = time.split(":");
+          // console.log(temp)
           for (var i = 0; i < Number(duration) + 1; i++) {
             var temp2 = Number(temp[0]) + i;
             for (var j = 0; j < res2.length; j++) {
-              // console.log(temp2)
+              console.log(temp2)
               Calender.findOneAndUpdate(
                 { date: date },
                 {
@@ -407,7 +409,19 @@ router.get("/:id/getAppointments", (req, resp) => {
     });
 });
 router.get("/getStatistics", (req, resp) => {
-  Appointment.find().then((res) => {});
+  var Employee = [];
+  User.find().then((res)=>{
+    res.map(data=>{
+      if(data.empID.slice(0,1)==='E')
+        Employee.push(data.empID)
+    })
+
+  })
+  Appointment.find().then((res) => {
+    const data= generateStats(res,Employee);
+  resp.send({data})
+    
+  });
 });
 
 module.exports = router;
