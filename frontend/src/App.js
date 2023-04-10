@@ -13,6 +13,7 @@ import AppointmentsForm from "./pages/AppointmentsForm";
 import AppointmentsDashboard from "./pages/AppointmentsDashboard";
 import Reschedule from "./pages/Reschedule";
 import Statistics from "./pages/Statistics";
+import Leave from "./pages/Leave";
 
 
 export default function App() {
@@ -22,11 +23,11 @@ export default function App() {
   const [empID, setuserName] = useState("")
   const [id,setID] = useState("")
   const [isSec,setisSec] = useState(false)
-  // const [Secid,setSecID] = useState("")
+ 
   const getUser=()=> {
     axios.get('/').then(response => {
       console.log('Get user response: ')
-     // console.log(response.data)
+   
       if (response.data.user) {
         console.log('Get User: There is a user saved in the server session: ')
 
@@ -57,13 +58,10 @@ export default function App() {
         <Route path="/AddAppointments" element={<AppointmentsForm setloggedIn={setloggedIn} ID={id}/>}/>
         <Route path="/Signup" element={<Signup/>}/>
         <Route path="/:id/Dashboard" element={<AppointmentsDashboard/>} ID={id}/>
+        <Route path="/:id/leave" element={<Leave/>} ID={id}/>
         <Route path="/:id1/Reschedule" element={<Reschedule/>} ID={id}/>
         <Route path="/Statistics" element={<Statistics/>}/>
       </Routes>
-
-      {/* <h1 className="text-3xl font-bold text-purple-700 underline">
-        Hello world!
-      </h1> */}
     </>
   );
 }

@@ -112,10 +112,18 @@ export default function Navbar(props) {
                   </li>
                   <li>
                     <Link
+                      to={`/${props.Id}/Leave`}
+                      class="text-gray-900 dark:text-white hover:underline"
+                    >
+                      Leave
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
                       to="/Statistics"
                       class="text-gray-900 dark:text-white hover:underline"
                     >
-                      Stats
+                      Statistics
                     </Link>
                   </li>
                 </>
