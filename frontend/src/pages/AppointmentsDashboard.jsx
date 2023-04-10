@@ -56,6 +56,9 @@ export default function AppointmentsDashboard(props) {
                 Venue
               </th>
               <th scope="col" class="px-6 py-3">
+               Execs Involved
+              </th>
+              <th scope="col" class="px-6 py-3">
                 ReSchedule
               </th>
             </tr>
@@ -70,6 +73,7 @@ export default function AppointmentsDashboard(props) {
                 slot_duration,
                 venue,
                 _id,
+                involvedExecs
               } = res;
               return (
                 <tbody>
@@ -87,6 +91,7 @@ export default function AppointmentsDashboard(props) {
                     <td class="px-6 py-4">{slot_time}</td>
                     <td class="px-6 py-4">{slot_duration} Hrs</td>
                     <td class="px-6 py-4">{venue}</td>
+                    <td class="px-6 py-4">{[...new Set(involvedExecs)].join(",")}</td>
                     <td class="px-6 py-4">
                       <Link
                         to={`../${_id}/Reschedule`}

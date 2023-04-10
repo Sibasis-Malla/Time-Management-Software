@@ -38,19 +38,15 @@ export default function Statistics() {
       },
     },
   };
-  //   const label = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  // const [meetingsHours, setMdata] = useState([])
-  // const [meetings, setNdata] = useState([])
-  // const [labels, setLabel] = useState([])
+
   const [data, setdata] = useState();
   useEffect(() => {
     axios.get("/getStatistics").then((res) => {
-      console.log(res);
-      // setdata(res.data.data.result)
+
 
       setdata({
         labels: res.data.data.result.map((data) => data.empID),
-        // labels:["1",2],
+     
         datasets: [
           {
             label: "Work Hours",
@@ -68,7 +64,7 @@ export default function Statistics() {
   }, []);
 
   return (
-    <div style={{ height: "500px", width: "1000px" }}>
+    <div className="w-3/4 mx-auto mt-20 mb-10 flex justify-center items-center">
       {data && <Chart type="bar" options={options} data={data}></Chart>}
     </div>
   );

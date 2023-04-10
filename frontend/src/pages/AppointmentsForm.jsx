@@ -126,7 +126,7 @@ export default function AppointmentsForm(props) {
               for="title"
               class="mb-3 block text-base font-medium text-[#07074D]"
             >
-              Title
+             Purpose
             </label>
             <input
               onChange={handleTitle}
