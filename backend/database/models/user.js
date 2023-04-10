@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema
-const bcrypt = require('bcryptjs');
-mongoose.promise = Promise
+const Schema = mongoose.Schema;
+const bcrypt = require("bcryptjs");
+mongoose.promise = Promise;
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -17,67 +17,58 @@ const appointmentSchema = new Schema({
   title: String,
   empID: String,
   created_at: Date,
-  isApproved:{type:Boolean, default:false},
-  involvedExecs:[{type:String}]
-
+  isApproved: { type: Boolean, default: false },
+  involvedExecs: [{ type: String }],
 });
 
-const Appointment = new mongoose.model('Appointment', appointmentSchema);
+const Appointment = new mongoose.model("Appointment", appointmentSchema);
 // Define userSchema
 const userSchema = new Schema({
-
-	name: { type: String, unique: false, required: false },
-	email: { type: String, unique: false, required: false },
-	empID: { type: String, unique: true, required: false },
-	secID:{ type: String, unique: true, required: false },
-	password: { type: String, unique: false, required: false },
-	appointments: [appointmentSchema],
-	
-
-})
+  name: { type: String, unique: false, required: false },
+  email: { type: String, unique: false, required: false },
+  empID: { type: String, unique: true, required: false },
+  secID: { type: String, unique: true, required: false },
+  password: { type: String, unique: false, required: false },
+  appointments: [appointmentSchema],
+});
 const calenderSchema = new Schema({
-	id: ObjectId,
-	date :{type: Date},
-	 a10:[{type:String}],
-	 a11:[{type:String}],
-	 a12:[{type:String}],
-	 a13:[{type:String}],
-	 a14:[{type:String}],
-	 a15:[{type:String}],
-	 a16:[{type:String}],
-	 a17:[{type:String}],
-	 
+  id: ObjectId,
+  date: { type: Date },
+  a10: [{ type: String }],
+  a11: [{ type: String }],
+  a12: [{ type: String }],
+  a13: [{ type: String }],
+  a14: [{ type: String }],
+  a15: [{ type: String }],
+  a16: [{ type: String }],
+  a17: [{ type: String }],
+});
 
-
-
-})
-
-const Calender = new mongoose.model('Calender', calenderSchema);
-
+const Calender = new mongoose.model("Calender", calenderSchema);
 
 // Define schema methods
 userSchema.methods = {
-	checkPassword: function (inputPassword) {
-		return bcrypt.compareSync(inputPassword, this.password)
-	},
-	hashPassword: plainTextPassword => {
-		return bcrypt.hashSync(plainTextPassword, 20)
-	}
-}
+  checkPassword: function (inputPassword) {
+    return bcrypt.compareSync(inputPassword, this.password);
+  },
+  hashPassword: (plainTextPassword) => {
+    return bcrypt.hashSync(plainTextPassword, 10);
+  },
+};
 
 // Define hooks for pre-saving
-userSchema.pre('save', function (next) {
-	if (!this.password) {
-		console.log('models/user.js =======NO PASSWORD PROVIDED=======')
-		next()
-	} else {
-		console.log('models/user.js hashPassword in pre save');
-		
-		this.password = this.hashPassword(this.password)
-		next()
-	}
-})
+userSchema.pre("save", function (next) {
+  if (!this.password) {
+    console.log("models/user.js =======NO PASSWORD PROVIDED=======");
+    next();
+  } else {
+    console.log("models/user.js hashPassword in pre save");
 
-const User  = new mongoose.model("User", userSchema);
+    this.password = this.hashPassword(this.password);
+    next();
+  }
+});
 
-module.exports = {User, Appointment,Calender}
+const User = new mongoose.model("User", userSchema);
+
+module.exports = { User, Appointment, Calender };
