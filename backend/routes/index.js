@@ -2,10 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { User, Appointment, Calender } = require("../database/models/user");
 const { checkAppointment, findSlot } = require("../helpers/checkIfValid");
-const {generateStats} = require("../helpers/generateStats")
-// const Appointment = require('../database/models/user')
-const passport = require("../passport");
+const { generateStats } = require("../helpers/generateStats");
 
+const passport = require("../passport");
 
 router.post("/signup", (req, res) => {
   console.log("user signup");
@@ -35,8 +34,7 @@ router.post("/signup", (req, res) => {
   });
 });
 
-router.post(
-  "/login",
+router.post("/login",
   function (req, res, next) {
     console.log("routes/user.js, login, req.body: ");
     console.log(req.body);
@@ -65,6 +63,7 @@ router.post("/logout", (req, res) => {
     res.send({ msg: "no user to log out" });
   }
 });
+
 router.post("/addAppt", (req, resp) => {
   console.log("adding appt....");
   const {
@@ -86,18 +85,16 @@ router.post("/addAppt", (req, resp) => {
         const temp = time.split(":");
         const res2 = involvedExecs.split(",");
         var temp2 = Number(temp[0]);
-        //const dur = Number(duration)
+
         res2.push(id);
-        // console.log(res2)
+
         for (var i = 0; i < Number(duration) + 1; i++) {
           var temp2 = Number(temp[0]) + i;
           for (var j = 0; j < res2.length; j++) {
-            // console.log(temp2)
             Calender.findOneAndUpdate(
               { date: date },
               {
                 $push: { [`a${temp2}`]: res2[j] },
-                //map1.set(Number(res[0]),true);
               }
             ).then(res);
           }
@@ -118,20 +115,14 @@ router.post("/addAppt", (req, resp) => {
           involvedExecs: res2,
         });
         newAppointment.save().then((savedUser) => {
-          // console.log(savedUser);
           const temp = savedUser._id;
           User.findOne({ empID: id })
             .then((res) => {
-              // console.log(res);
               res.appointments.push(temp);
               res
                 .save()
-                .then((res) => {
-                  // resp.send({ message: " Added Successfully" });
-                })
+                .then((res) => {})
                 .catch((err) => console.log(err));
-
-              // Appointment.findOneAndUpdate(res.appointments)
             })
             .catch((err) => {
               console.log(err);
@@ -162,7 +153,6 @@ router.post("/addAppt", (req, resp) => {
               { date: date },
               {
                 $push: { [`a${temp2}`]: res2[j] },
-                //map1.set(Number(res[0]),true);
               }
             ).then(res);
           }
@@ -183,11 +173,9 @@ router.post("/addAppt", (req, resp) => {
           involvedExecs: res2,
         });
         newAppointment.save().then((savedUser) => {
-          // console.log(savedUser);
           const temp = savedUser._id;
           User.findOne({ empID: id })
             .then((res) => {
-              // console.log(res);
               res.appointments.push(temp);
               res
                 .save()
@@ -199,8 +187,6 @@ router.post("/addAppt", (req, resp) => {
                   });
                 })
                 .catch((err) => console.log(err));
-
-              // Appointment.findOneAndUpdate(res.appointments)
             })
             .catch((err) => {
               console.log(err);
@@ -209,6 +195,168 @@ router.post("/addAppt", (req, resp) => {
       });
     }
   });
+});
+
+router.post("/:id/reschedule", (req, resp) => {
+  const apptId = req.params.id;
+  const { date, time, duration, venue } = req.body;
+  Appointment.findOne({ _id: apptId }).then((result) => {
+
+    const involvedExecs  = [...new Set(result.involvedExecs)];
+    const id = result.empID;
+    const oldTime = result.slot_time;
+    const oldDate = result.slot_date;
+    const oldDuration = result.slot_duration;
+    Calender.findOne({ date: date })
+      .then((res) => {
+        if (res) {
+          if (checkAppointment(time, duration, res, involvedExecs, id)) {
+            const res2  = [...new Set(involvedExecs)];
+            const oldTime2 = oldTime.split(":");
+            var oldtemp2 = Number(oldTime2[0]);
+            
+            for (var j = 0; j < res2.length; j++) {
+              var temp2 = Number(oldtemp2) ;
+              for (var i = 0; i < Number(oldDuration) + 1; i++) {
+               
+                Calender.findOneAndUpdate(
+                  { date: oldDate },
+                  {
+                    $pull: { [`a${temp2}`]: res2[j] },
+                  }
+                ).then((res) => {});
+                temp2++;
+              }
+             
+            }
+
+
+            const temp = time.split(":");
+            // console.log("Lenght",res2.length)
+            for (var j = 0; j < res2.length; j++) {
+              
+              var temp2 = Number(temp[0]) ;
+              for (var i = 0; i < Number(duration) + 1; i++) {
+                Calender.findOneAndUpdate(
+                  { date: date},
+                  {
+
+                    $push: { [`a${temp2}`]: res2[j] },
+                  }
+                ).then(res);
+                temp2++;
+              }
+           
+            }
+
+            Appointment.findOneAndUpdate(
+              { _id: req.params.id },
+              req.user.empID.slice(0, 1) === "E"
+                ? {
+                    slot_date: date,
+                    slot_time: time,
+                    slot_duration: duration,
+                    venue: venue,
+                  }
+                : {
+                    slot_date: date,
+                    slot_time: time,
+                    slot_duration: duration,
+                    venue: venue,
+                    isApproved: false,
+                  }
+            ).then((data) => {});
+
+            resp.send({
+              data: { start: 0, end: 0 },
+              bool: true,
+              message: " Added Successfully",
+            });
+          } else {
+            const result = findSlot(involvedExecs, id, duration, time, res);
+            resp.send({ data: result, bool: false, message: "NotPossible" });
+          }
+        } else {
+          const oldTime2 = oldTime.split(":");
+          var oldtemp2 = Number(oldTime2[0]);
+
+          const res2 = [...new Set(involvedExecs)];
+          
+          for (var j = 0; j < res2.length; j++) {
+            var temp2 = Number(oldtemp2) ;
+            for (var i = 0; i < Number(oldDuration) + 1; i++) {
+            
+              Calender.findOneAndUpdate(
+                { date: oldDate },
+                {
+                  $pull: { [`a${temp2}`]: res2[j] },
+                }
+              ).then((res) => {});
+              temp2++;
+            }
+          
+          }
+          const newCalender = new Calender({
+            date: date,
+          });
+          newCalender.save().then((res) => {
+            const temp = time.split(":");
+            const res2 = [...new Set(involvedExecs)];
+           
+           
+            for ( var j = 0; j < res2.length; j++) {
+              var temp2 = Number(temp[0]);
+              for (var i = 0; i < Number(duration) + 1; i++) {
+                
+             
+                Calender.findOneAndUpdate(
+                  { date: date },
+                  {
+                    $push: { [`a${temp2}`]: res2[i] },
+                  }
+                ).then(res);
+                temp2++;
+              }
+              
+            }
+            res2.push(id);
+            Appointment.findOneAndUpdate(
+              { _id: req.params.id },
+              req.user.empID.slice(0, 1) === "E"
+                ? {
+                    slot_date: date,
+                    slot_time: time,
+                    slot_duration: duration,
+                    venue: venue,
+                  }
+                : {
+                    slot_date: date,
+                    slot_time: time,
+                    slot_duration: duration,
+                    venue: venue,
+                    isApproved: false,
+                  }
+            ).then((data) => {
+            });
+          });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+});
+router.post("/:id/approve", (req, resp) => {
+  Appointment.findOneAndUpdate(
+    { _id: req.params.id },
+    {
+      isApproved: true,
+    }
+  )
+    .then((res) => {
+      resp.send(res);
+    })
+    .catch((err) => console.log(err));
 });
 
 router.get("/", (req, res, next) => {
@@ -226,179 +374,6 @@ router.get("/", (req, res, next) => {
     res.json({ user: null });
   }
 });
-router.post("/:id/reschedule", (req, resp) => {
-  const apptId = req.params.id;
-  const { date, time, duration, venue } = req.body;
-  Appointment.findOne({ _id: apptId }).then((result) => {
-    // console.log(res)
-    const involvedExecs = result.involvedExecs;
-    // console.log(involvedExecs)
-    const id = result.empID;
-    const oldTime = result.slot_time;
-    const oldDate = result.slot_date;
-    const oldDuration = result.slot_duration;
-    Calender.findOne({ date: date }).then((res) => {
-      // console.log(res);
-      if (res) {
-        if (checkAppointment(time, duration, res, involvedExecs, id)) {
-          
-          const res2 = involvedExecs;
-          const oldTime2 = oldTime.split(":");
-          var oldtemp2 = Number(oldTime2[0]);
-          //const dur = Number(duration)
-          // res2.push(id);
-          // console.log(res2)
-          for (var i = 0; i < Number(oldDuration)+1; i++) {
-            var temp2 = Number(oldtemp2) + i;
-            for (var j = 0; j < res2.length; j++) {
-              // console.log(temp2)
-              Calender.findOneAndUpdate(
-                { date: oldDate },
-                {
-                  $pull: { [`a${temp2}`]: res2[j] },
-                  //map1.set(Number(res[0]),true);
-                }
-              ).then((res) => {});
-            }
-            temp2++;
-          }
-          const temp = time.split(":");
-          // console.log(temp)
-          for (var i = 0; i < Number(duration) + 1; i++) {
-            var temp2 = Number(temp[0]) + i;
-            for (var j = 0; j < res2.length; j++) {
-              console.log(temp2)
-              Calender.findOneAndUpdate(
-                { date: date },
-                {
-                  $push: { [`a${temp2}`]: res2[j] },
-                  //map1.set(Number(res[0]),true);
-                }
-              ).then(res);
-            }
-            temp2++;
-          }
-  
-          Appointment.findOneAndUpdate(
-            { _id: req.params.id },
-            req.user.empID.slice(0, 1) === "E"
-              ? {
-                  slot_date: date,
-                  slot_time: time,
-                  slot_duration: duration,
-                  venue: venue,
-                }
-              : {
-                  slot_date: date,
-                  slot_time: time,
-                  slot_duration: duration,
-                  venue: venue,
-                  isApproved: false,
-                }
-          ).then((data) => {
-            //console.log(req.params.id)
-            // console.log("reschedule");
-            //console.log(data);
-            //res.json(data.empID);
-          });
-  
-          resp.send({
-            data: { start: 0, end: 0 },
-            bool: true,
-            message: " Added Successfully",
-          });
-        } else {
-          const result = findSlot(involvedExecs, id, duration, time, res);
-          resp.send({ data: result, bool: false, message: "NotPossible" });
-        }
-      } else {
-        const oldTime = oldTime.split(":");
-        var oldtemp2 = Number(oldTime[0]);
-        //const dur = Number(duration)
-        const res2 = involvedExecs;
-        // res2.push(id);
-        // console.log(res2)
-        for (var i = 0; i < Number(oldDuration)+1; i++) {
-          var temp2 = Number(oldtemp2) + i;
-          for (var j = 0; j < res2.length; j++) {
-            // console.log(temp2)
-            Calender.findOneAndUpdate(
-              { date: oldDate },
-              {
-                $pull: { [`a${temp2}`]: res2[j] },
-                //map1.set(Number(res[0]),true);
-              }
-            ).then((res) => {});
-          }
-          temp2++;
-        }
-        const newCalender = new Calender({
-          date: date,
-        });
-        newCalender.save().then((res) => {
-          const temp = time.split(":");
-          const res2 = involvedExecs.split(",");
-          var temp2 = Number(temp[0]);
-          res2.push(id);
-          for (var i = 0; i < Number(duration) + 1; i++) {
-            for (var j = 0; j < res2.length; j++) {
-              Calender.findOneAndUpdate(
-                { date: date },
-                {
-                  $push: { [`a${temp2}`]: res2[j] },
-                  //map1.set(Number(res[0]),true);
-                }
-              ).then(res);
-            }
-            temp2++;
-          }
-          res2.push(id);
-          Appointment.findOneAndUpdate(
-            { _id: req.params.id },
-            req.user.empID.slice(0, 1) === "E"
-              ? {
-                  slot_date: date,
-                  slot_time: time,
-                  slot_duration: duration,
-                  venue: venue,
-                }
-              : {
-                  slot_date: date,
-                  slot_time: time,
-                  slot_duration: duration,
-                  venue: venue,
-                  isApproved: false,
-                }
-          ).then((data) => {
-            //console.log(req.params.id)
-            // console.log("reschedule");
-            //console.log(data);
-            res.json(data.empID);
-          });
-        });
-      }
-    }).catch(err=>{
-      console.log(err)
-    })
-  });
-
-
-
-  //console.log("hahahaha")
-  //console.log();
-});
-router.post("/:id/approve", (req, resp) => {
-  Appointment.findOneAndUpdate(
-    { _id: req.params.id },
-    {
-      isApproved: true,
-    }
-  )
-    .then((res) => {
-      resp.send(res);
-    })
-    .catch((err) => console.log(err));
-});
 router.get("/:id/getAppointments", (req, resp) => {
   Appointment.find({ involvedExecs: { $in: [`${req.params.id}`] } })
     .then((res) => {
@@ -410,17 +385,14 @@ router.get("/:id/getAppointments", (req, resp) => {
 });
 router.get("/getStatistics", (req, resp) => {
   var Employee = [];
-  User.find().then((res)=>{
-    res.map(data=>{
-      if(data.empID.slice(0,1)==='E')
-        Employee.push(data.empID)
-    })
-
-  })
+  User.find().then((res) => {
+    res.map((data) => {
+      if (data.empID.slice(0, 1) === "E") Employee.push(data.empID);
+    });
+  });
   Appointment.find().then((res) => {
-    const data= generateStats(res,Employee);
-  resp.send({data})
-    
+    const data = generateStats(res, Employee);
+    resp.send({ data });
   });
 });
 
