@@ -32,8 +32,12 @@ export default function Reschedule(props) {
         venue:venue,
         }).then(res=>{
             console.log(res)
-            alert("Sent For Approval")
-            window.location.href = `/${res.data}/Dashboard`
+            console.log(res)
+           
+
+            alert(`${res.data.message} ${!res.data.bool?`,Try with slot,${res.data.data.start}-${res.data.data.end}`:``}`);
+            // alert("Sent For Approval")
+            // window.location.href = `/${res.data}/Dashboard`
         }).catch(err=>alert("Something Wrong Happened"))
     }
   return (

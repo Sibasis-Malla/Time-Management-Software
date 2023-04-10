@@ -12,6 +12,7 @@ import Signup from "./pages/Signup";
 import AppointmentsForm from "./pages/AppointmentsForm";
 import AppointmentsDashboard from "./pages/AppointmentsDashboard";
 import Reschedule from "./pages/Reschedule";
+import Statistics from "./pages/Statistics";
 
 
 export default function App() {
@@ -57,6 +58,7 @@ export default function App() {
         <Route path="/Signup" element={<Signup/>}/>
         <Route path="/:id/Dashboard" element={<AppointmentsDashboard/>} ID={id}/>
         <Route path="/:id1/Reschedule" element={<Reschedule/>} ID={id}/>
+        <Route path="/Statistics" element={<Statistics/>}/>
       </Routes>
 
       {/* <h1 className="text-3xl font-bold text-purple-700 underline">

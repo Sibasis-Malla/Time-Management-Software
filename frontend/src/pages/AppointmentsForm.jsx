@@ -52,14 +52,14 @@ export default function AppointmentsForm(props) {
         id:props.ID,
         involvedExecs:execs
         }).then(res=>{
-            console.log(res.data.data)
+           // console.log(res.data.data)
             // var available=[]
            // const{a10,a11,a12,a13,a14,a15,a16,a17} = res.data.data
-           //console.log(res)
+           console.log(res)
            
 
-            alert(`${res.data.message} ${res.data.bool?`,Try with slot,${res.data.data.start}-${res.data.data.end}`:``}`);
-            window.location.href = `/${props.ID}/Dashboard`
+            alert(`${res.data.message} ${!res.data.bool?`,Try with slot,${res.data.data.start}-${res.data.data.end}`:``}`);
+            // window.location.href = `/${props.ID}/Dashboard`
             
         })
     }
