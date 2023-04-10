@@ -316,7 +316,7 @@ router.post("/:id/reschedule", (req, resp) => {
                 Calender.findOneAndUpdate(
                   { date: date },
                   {
-                    $push: { [`a${temp2}`]: res2[i] },
+                    $push: { [`a${temp2}`]: res2[j] },
                   }
                 ).then(res);
                 temp2++;
@@ -341,6 +341,12 @@ router.post("/:id/reschedule", (req, resp) => {
                     isApproved: false,
                   }
             ).then((data) => {
+              resp.send({
+                data: { start: 0, end: 0 },
+                bool: true,
+                message: " Added Successfully",
+              })
+              sendEmail(data);
             });
           });
         }
