@@ -3,6 +3,7 @@ const router = express.Router();
 const { User, Appointment, Calender } = require("../database/models/user");
 const { checkAppointment, findSlot } = require("../helpers/checkIfValid");
 const { generateStats } = require("../helpers/generateStats");
+const {sendEmail} = require("../helpers/sendEmail")
 
 const passport = require("../passport");
 
@@ -112,9 +113,10 @@ router.post("/addAppt", (req, resp) => {
           title: title,
           empID: id,
           isApproved: true,
-          involvedExecs: res2,
+          involvedExecs: [...new Set(res2)],
         });
         newAppointment.save().then((savedUser) => {
+          sendEmail(savedUser)
           const temp = savedUser._id;
           User.findOne({ empID: id })
             .then((res) => {
@@ -134,6 +136,7 @@ router.post("/addAppt", (req, resp) => {
           bool: true,
           message: " Added Successfully",
         });
+       
       } else {
         const result = findSlot(involvedExecs, id, duration, time, res);
         resp.send({ data: result, bool: false, message: "NotPossible" });
@@ -170,10 +173,11 @@ router.post("/addAppt", (req, resp) => {
           title: title,
           empID: id,
           isApproved: true,
-          involvedExecs: res2,
+          involvedExecs: [...new Set(res2)],
         });
         newAppointment.save().then((savedUser) => {
           const temp = savedUser._id;
+          sendEmail(savedUser)
           User.findOne({ empID: id })
             .then((res) => {
               res.appointments.push(temp);
@@ -265,7 +269,7 @@ router.post("/:id/reschedule", (req, resp) => {
                     venue: venue,
                     isApproved: false,
                   }
-            ).then((data) => {});
+            ).then((data) => { sendEmail(data)});
 
             resp.send({
               data: { start: 0, end: 0 },
