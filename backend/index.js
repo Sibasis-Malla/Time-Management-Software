@@ -1,3 +1,4 @@
+//This module initializes the server config
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
@@ -10,11 +11,6 @@ var cors = require("cors");
 const PORT = 8080;
 // Route requires
 const user = require("./routes/index");
-// app.use(function(req, res, next) {
-// 	res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-// 	res.header("Access-Control-Allow-Credentials",true);
-// 	next();
-//   });
 
 const corsConfig = {
   origin: "http://localhost:3000",
