@@ -1,3 +1,5 @@
+//This module displays the statistics of the amount of Manhours spent by the executives 
+//and the number of meetings they have attended along with average time spent per meeting
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Chart } from "react-chartjs-2";
@@ -57,6 +59,11 @@ export default function Statistics() {
             label: "Total Meetings",
             data: res.data.data.result.map((data) => data.meetingNum),
             backgroundColor: "rgb(75, 192, 192)",
+          },
+          {
+            label: "Avg Time Spent Per meeting",
+            data: res.data.data.result.map((data) => data.WorkHours/data.meetingNum),
+            backgroundColor: "rgb(75, 0, 192)",
           },
         ],
       });

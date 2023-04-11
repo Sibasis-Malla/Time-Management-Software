@@ -1,7 +1,11 @@
+//This module takes input of the appointment data and sends a post request to the server
+//The server checks if the Appointment is valid and then it is added to the Database
+
 import React, { useState } from "react";
 import axios from "axios";
 
 export default function AppointmentsForm(props) {
+    //React States to hold data
   const [name, setname] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -11,6 +15,7 @@ export default function AppointmentsForm(props) {
   const [venue, setVenue] = useState("");
   const [title, setTitle] = useState("");
   const [execs, setExecs] = useState("");
+    //handlers for form Data
   const handleName = (event) => {
     setname(() => ([event.target.name] = event.target.value));
   };
@@ -40,6 +45,7 @@ export default function AppointmentsForm(props) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    //sending a Post request
     axios
       .post("/addAppt", {
         name: name,

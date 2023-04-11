@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+//This module helps in rescheduling of the meetings/Appointments and can be accessed by the Executives
+//and secretaries ..if a secretary reschedules then the meeting is sent for approval by the respective Execs. 
+import React, { useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
 export default function Reschedule(props) {
   const { id1 } = useParams();
+      //React States to hold data
+
   const [date, setDate] = useState();
   const [time, setTime] = useState("");
   const [duration, setDuration] = useState();
   const [venue, setVenue] = useState("");
-
+      //handlers for form Data
   const handleDate = (event) => {
     setDate(() => ([event.target.name] = event.target.value));
   };
@@ -24,7 +28,7 @@ export default function Reschedule(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(props.ID);
+    // Post request to server for rescheduling
     axios
       .post(`/${id1}/reschedule`, {
         date: date,

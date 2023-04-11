@@ -1,11 +1,14 @@
+//This module helps in adding the Executive and Secreataries information to the database 
 import React, { useState } from "react";
 import axios from "axios";
 export default function Signup() {
+  //React states to hold info
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [empID, setEmpId] = useState("");
   const [secID, setSecId] = useState("");
   const [password, setpassword] = useState("");
+  //Form handlers
   const handleName = (event) => {
     setName(() => ([event.target.name] = event.target.value));
   };

@@ -1,3 +1,4 @@
+//Landing Page or Home page. Gives a brief Description of the Project
 import React from "react";
 
 export default function Home() {

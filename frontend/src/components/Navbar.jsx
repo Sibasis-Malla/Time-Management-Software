@@ -1,3 +1,5 @@
+//This module displays is the Navbar across all Pages
+//The Navbar has interactive buttons which helps Execs and secretaries to access all the functionalities 
 import React from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";

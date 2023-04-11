@@ -1,3 +1,4 @@
+//This module helps Executives to select a range of Dates they are absent.
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -5,48 +6,41 @@ import { useParams } from "react-router-dom";
 export default function Leave(props) {
   const { id1 } = useParams();
   const [date, setDate] = useState();
-  const [time, setTime] = useState("");
-  const [duration, setDuration] = useState();
-  const [venue, setVenue] = useState("");
+  const [endDate,setendDate] = useState()
+ 
 
   const handleDate = (event) => {
     setDate(() => ([event.target.name] = event.target.value));
   };
-  const handleTime = (event) => {
-    setTime(() => ([event.target.name] = event.target.value));
-  };
-  const handleVenue = (event) => {
-    setVenue(() => ([event.target.name] = event.target.value));
-  };
-  const handleDuration = (event) => {
-    setDuration(() => ([event.target.name] = event.target.value));
+  const handleendDate = (event) => {
+    setendDate(() => ([event.target.name] = event.target.value));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(props.ID);
-    axios
-      .post(`/${id1}/reschedule`, {
-        date: date,
-        time: time,
-        duration: duration,
-        venue: venue,
-      })
-      .then((res) => {
-        console.log(res);
-        console.log(res);
+    // axios
+    //   .post(`/${id1}/reschedule`, {
+    //     date: date,
+    //     time: time,
+    //     duration: duration,
+    //     venue: venue,
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //     console.log(res);
 
-        alert(
-          `${res.data.message} ${
-            !res.data.bool
-              ? `,Try with slot,${res.data.data.start}-${res.data.data.end}`
-              : ``
-          }`
-        );
-        // alert("Sent For Approval")
-        // window.location.href = `/${res.data}/Dashboard`
-      })
-      .catch((err) => alert("Something Wrong Happened"));
+    //     alert(
+    //       `${res.data.message} ${
+    //         !res.data.bool
+    //           ? `,Try with slot,${res.data.data.start}-${res.data.data.end}`
+    //           : ``
+    //       }`
+    //     );
+    //     // alert("Sent For Approval")
+    //     // window.location.href = `/${res.data}/Dashboard`
+    //   })
+    //   .catch((err) => alert("Something Wrong Happened"));
   };
   return (
     <div class="flex items-center justify-center p-12">
@@ -64,7 +58,7 @@ export default function Leave(props) {
                 <input
                   onChange={handleDate}
                   type="date"
-                  name="date"
+                  name="Date"
                   id="date"
                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />
@@ -79,9 +73,9 @@ export default function Leave(props) {
                   End Date
                 </label>
                 <input
-                  onChange={handleDate}
+                  onChange={handleendDate}
                   type="date"
-                  name="date"
+                  name="endDate"
                   id="date"
                   class="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                 />

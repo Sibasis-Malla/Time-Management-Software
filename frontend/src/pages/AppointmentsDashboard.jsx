@@ -1,3 +1,6 @@
+//This module displays all the meetings of an Executive, It can be accessed by the Executives and their
+//secretaries the The "appointments to approve" section shows the appointments that are rescheduled 
+//and are to be approved by Execs
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -9,6 +12,7 @@ export default function AppointmentsDashboard(props) {
   const [curr, setCurr] = useState(null);
   const { id } = useParams();
   console.log(id);
+  //Requesting All the appointments of the Execs to Display
   useEffect(() => {
     id &&
       axios
