@@ -7,6 +7,7 @@ const { User, Appointment, Calender } = require("../database/models/user");
 const { checkAppointment, findSlot } = require("../helpers/checkIfValid");
 const { generateStats } = require("../helpers/generateStats");
 const {sendEmail} = require("../helpers/sendEmail")
+const {markLeave} = require("../helpers/CheckLeave")
 
 const passport = require("../passport");
 //This function handles & serves the signup requests
@@ -383,6 +384,11 @@ router.post("/:id/approve", (req, resp) => {
     })
     .catch((err) => console.log(err));
 });
+router.post("/:id/leave",(req,resp)=>{
+  const {startDate,endDate} = req.body
+  markLeave(startDate,endDate,req.params)
+  resp.send({data:"done"})
+})
 //Serves the current user
 router.get("/", (req, res, next) => {
   console.log("===== user!!======");

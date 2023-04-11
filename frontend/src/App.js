@@ -58,7 +58,7 @@ export default function App() {
         <Route path="/AddAppointments" element={<AppointmentsForm setloggedIn={setloggedIn} ID={id}/>}/>
         <Route path="/Signup" element={<Signup/>}/>
         <Route path="/:id/Dashboard" element={<AppointmentsDashboard/>} ID={id}/>
-        <Route path="/:id/leave" element={<Leave/>} ID={id}/>
+        <Route path="/:id2/leave" element={<Leave/>} ID={id}/>
         <Route path="/:id1/Reschedule" element={<Reschedule/>} ID={id}/>
         <Route path="/Statistics" element={<Statistics/>}/>
       </Routes>

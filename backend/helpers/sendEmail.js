@@ -1,8 +1,7 @@
-// const emailjs = require("emailjs");
+//used to send Emails to the involved executives of a meeting
 const axios = require("axios")
 const moment = require('moment')
 const { User } = require("../database/models/user");
-//used to send Emails to the involved executives of a meeting
 function sendEmail(data) {
    
     const arr = [... new Set(data.involvedExecs)]
@@ -17,6 +16,8 @@ function sendEmail(data) {
                     "purpose":data.title,
                     "Start Time":data.slot_time,
                     "Duration":`${data.slot_duration} hrs`,
+                    "involved Executives":arr.join(','),
+                    "venue":data.venue
                 })
         
             }

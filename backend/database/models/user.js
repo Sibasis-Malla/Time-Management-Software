@@ -1,4 +1,4 @@
-//This is the database Schema for storing data into MongoDB
+//This module represents the database Schema for storing data into MongoDB
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;

@@ -4,7 +4,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const strategy = new LocalStrategy(
   {
     usernameField: "empID",
-    passwordField: "password", // not necessary, DEFAULT
+    passwordField: "password", 
   },
   function (empID, password, done) {
     //console.log("We are in LocalStrategy")

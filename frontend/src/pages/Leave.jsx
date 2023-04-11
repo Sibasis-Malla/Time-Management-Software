@@ -4,7 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 export default function Leave(props) {
-  const { id1 } = useParams();
+  const { id2 } = useParams();
   const [date, setDate] = useState();
   const [endDate,setendDate] = useState()
  
@@ -18,29 +18,16 @@ export default function Leave(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(props.ID);
-    // axios
-    //   .post(`/${id1}/reschedule`, {
-    //     date: date,
-    //     time: time,
-    //     duration: duration,
-    //     venue: venue,
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //     console.log(res);
-
-    //     alert(
-    //       `${res.data.message} ${
-    //         !res.data.bool
-    //           ? `,Try with slot,${res.data.data.start}-${res.data.data.end}`
-    //           : ``
-    //       }`
-    //     );
-    //     // alert("Sent For Approval")
-    //     // window.location.href = `/${res.data}/Dashboard`
-    //   })
-    //   .catch((err) => alert("Something Wrong Happened"));
+    // console.log(props.ID);
+    axios.post(`/${id2}/leave`,{
+      startDate: date,
+      endDate:endDate
+    }).then(res=>{
+      alert("Leave is Marked")
+    }).catch(err=>{
+      alert("Something Went wrong")
+    })
+    
   };
   return (
     <div class="flex items-center justify-center p-12">
