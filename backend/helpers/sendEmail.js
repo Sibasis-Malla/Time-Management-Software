@@ -2,7 +2,7 @@
 const axios = require("axios")
 const moment = require('moment')
 const { User } = require("../database/models/user");
-
+//used to send Emails to the involved executives of a meeting
 function sendEmail(data) {
    
     const arr = [... new Set(data.involvedExecs)]

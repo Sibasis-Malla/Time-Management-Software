@@ -1,14 +1,12 @@
-//const moment = require("moment");
+//Checks if Current Appointment is valid Or not
 function checkAppointment(NewTime, NewDuration, res, involvedExecs, id) {
   const temp = NewTime.split(":");
   const res2 = Array.isArray(involvedExecs)?involvedExecs:involvedExecs.split(",");
   res2.push(id);
 
-  // console.log(temp[0]);
   for (var i = 0; i <= Number(NewDuration); i++) {
     const temp2 = Number(temp[0]) + i;
-    // console.log(temp2)
-    // console.log("hehehe",res.a10)
+
     const temp3 = String(`a${temp2}`);
     if (res[temp3].some((r) => res2.indexOf(r) >= 0)) {
       return false;
@@ -17,7 +15,7 @@ function checkAppointment(NewTime, NewDuration, res, involvedExecs, id) {
 
   return true;
 }
-
+//Finds feasible Slot and returns it
 function findSlot(involvedExecs, id, NewDuration, NewTime, res) {
   const temp = NewTime.split(":");
   const res2 = Array.isArray(involvedExecs)?involvedExecs:involvedExecs.split(",");

@@ -1,3 +1,5 @@
+//This is the database Schema for storing data into MongoDB
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcryptjs");
@@ -5,6 +7,7 @@ mongoose.promise = Promise;
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
+// Appointment Schema is used to Store various Appointments scheduled by the execs
 const appointmentSchema = new Schema({
   id: ObjectId,
   name: String,
@@ -23,6 +26,7 @@ const appointmentSchema = new Schema({
 
 const Appointment = new mongoose.model("Appointment", appointmentSchema);
 // Define userSchema
+//User schema stores the data about the Executives and Secreatires
 const userSchema = new Schema({
   name: { type: String, unique: false, required: false },
   email: { type: String, unique: false, required: false },
@@ -31,6 +35,8 @@ const userSchema = new Schema({
   password: { type: String, unique: false, required: false },
   appointments: [appointmentSchema],
 });
+
+//Calender Schema helps in storing status of the executives across the office Hours on a certain Date
 const calenderSchema = new Schema({
   id: ObjectId,
   date: { type: Date },
@@ -46,7 +52,7 @@ const calenderSchema = new Schema({
 
 const Calender = new mongoose.model("Calender", calenderSchema);
 
-// Define schema methods
+// Helps in checking validity and hashing passwords
 userSchema.methods = {
   checkPassword: function (inputPassword) {
     return bcrypt.compareSync(inputPassword, this.password);

@@ -12,18 +12,6 @@ const strategy = new LocalStrategy(
       .then((user) => {
         //console.log(user)
         return done(null, user);
-        // if (err) {
-        // 	// console.log("err1")
-        // 	// console.log(err)
-        // 	return done(err)
-        // }
-        // if (!user) {
-        // 	return done(null, false, { message: 'Incorrect empID' })
-        // }
-        // if (!user.checkPassword(password)) {
-        // 	return done(null, false, { message: 'Incorrect password' })
-        // }
-        // return done(null, user)
       })
       .catch((err) => {
         return done(err);

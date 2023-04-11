@@ -1,3 +1,6 @@
+//This module serves all the core functionalities of the applications
+//It handles all  Post and get requests 
+//Returns the required data  and also updates database states
 const express = require("express");
 const router = express.Router();
 const { User, Appointment, Calender } = require("../database/models/user");
@@ -6,7 +9,8 @@ const { generateStats } = require("../helpers/generateStats");
 const {sendEmail} = require("../helpers/sendEmail")
 
 const passport = require("../passport");
-
+//This function handles & serves the signup requests
+//Creates a new user using the Database' User Schema and stores it 
 router.post("/signup", (req, res) => {
   console.log("user signup");
 
@@ -34,7 +38,8 @@ router.post("/signup", (req, res) => {
     }
   });
 });
-
+//This function handles & serves the login requests and authenticates user
+//Incase of wrong credentials notifies user
 router.post("/login",
   function (req, res, next) {
     console.log("routes/user.js, login, req.body: ");
@@ -51,6 +56,7 @@ router.post("/login",
   }
 );
 
+//This function handles logOut requests and logouts user from the session
 router.post("/logout", (req, res) => {
   if (req.user) {
     req.logout(function (err) {
@@ -65,6 +71,9 @@ router.post("/logout", (req, res) => {
   }
 });
 
+//This function allows Execs to add Appointments
+//Checks if the current Appointment is schedulable
+//Returns a new Slot if available
 router.post("/addAppt", (req, resp) => {
   console.log("adding appt....");
   const {
@@ -201,6 +210,10 @@ router.post("/addAppt", (req, resp) => {
   });
 });
 
+//This function allows Execs and Secreatry to reschedule Appointments
+//Checks if the current Appointment is re-schedulable to the new date
+//Returns a new Slot if available
+//If Secretary updates sends for approval
 router.post("/:id/reschedule", (req, resp) => {
   const apptId = req.params.id;
   const { date, time, duration, venue } = req.body;
@@ -356,6 +369,8 @@ router.post("/:id/reschedule", (req, resp) => {
       });
   });
 });
+//This function allows Execs to approve the reschedule Appointments
+// Approved Appointments are added to the current Dairy
 router.post("/:id/approve", (req, resp) => {
   Appointment.findOneAndUpdate(
     { _id: req.params.id },
@@ -368,7 +383,7 @@ router.post("/:id/approve", (req, resp) => {
     })
     .catch((err) => console.log(err));
 });
-
+//Serves the current user
 router.get("/", (req, res, next) => {
   console.log("===== user!!======");
 
@@ -384,6 +399,7 @@ router.get("/", (req, res, next) => {
     res.json({ user: null });
   }
 });
+//Serves the specific Appointments
 router.get("/:id/getAppointments", (req, resp) => {
   Appointment.find({ involvedExecs: { $in: [`${req.params.id}`] } })
     .then((res) => {
@@ -393,6 +409,7 @@ router.get("/:id/getAppointments", (req, resp) => {
       resp.send(err);
     });
 });
+//Serves stats
 router.get("/getStatistics", (req, resp) => {
   var Employee = [];
   User.find().then((res) => {

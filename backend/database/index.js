@@ -1,3 +1,4 @@
+//index file for connecting to database
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 
